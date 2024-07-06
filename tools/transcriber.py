@@ -52,7 +52,6 @@ if uploaded_file is not None:
     f.write(uploaded_file.getbuffer())
     st.write('')
     st.write(f'1 / 3 - 檔案複製到此資料夾下')
-    # st.write(f'1 / 4 - 檔案複製到此資料夾下：./input/{current_timestamp}')
 
     # 處理檔案 1
     # 1. 準備輸出目錄
@@ -62,7 +61,6 @@ if uploaded_file is not None:
     input_file = f'{input_dir}/{full_file_name}'
     output_file = f'{output_dir}/{file_name}.mp3'
     st.write(f'2 / 3 - 轉換並壓縮檔案')
-    # st.write(f'2 / 4 - 轉換並壓縮檔案：{output_file}')
     ffmpeg.input(input_file).output(output_file, q='9', ac='1').overwrite_output().run()
 
     if check_file_size(output_file):
@@ -72,7 +70,6 @@ if uploaded_file is not None:
         input_file = open(output_file, "rb")
         output_file = f'{output_dir}/{file_name}.srt'
         st.write(f'3 / 3 - 轉換成 srt 格式的逐字稿')
-        # st.write(f'3 / 4 - 轉換成 srt 格式的逐字稿：{output_file}')
         prompt = user_prompt1
         transcription = client.audio.transcriptions.create(
             model = "whisper-1", 
@@ -83,8 +80,7 @@ if uploaded_file is not None:
         )
         file = open(output_file, 'w')
         file.write(transcription)
-        with st.expander("逐字稿"):
-            st.code(transcription, language='wiki')
+        st.code(transcription, language='wiki')
 
     else:
         st.write(f'超過檔案大小')
