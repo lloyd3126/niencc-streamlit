@@ -80,7 +80,14 @@ if uploaded_file is not None:
         )
         file = open(output_file, 'w')
         file.write(transcription)
-        st.code(transcription, language='wiki')
+        with st.expander("逐字稿 - srt 格式"):
+            st.code(transcription, language='wiki')
+        with st.expander("逐字稿 - text 格式"):
+            transcription_txt = ""
+            for idx, t in enumerate(transcription.split("\n")):
+                if idx % 4 == 2:
+                    transcription_txt += t + " "
+            st.code(transcription_txt, language='wiki')
 
     else:
         st.write(f'超過檔案大小')
