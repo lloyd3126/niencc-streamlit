@@ -8,8 +8,11 @@ from openai import OpenAI
 api_key = st.text_input("OpenAI API keys", "")
 client = OpenAI(api_key=api_key)
 
+language = st.text_input("transcript language", "zh")
+
 user_prompt1 = """使用繁體中文與英文輸出。"""
 user_prompt1 = st.text_area("轉逐字稿的提示詞", user_prompt1) + "\n\n"
+
 
 # 創建文件上傳器
 uploaded_file = st.file_uploader(
@@ -74,7 +77,7 @@ if uploaded_file is not None:
         transcription = client.audio.transcriptions.create(
             model = "whisper-1", 
             file = input_file,
-            language = "zh",
+            language = language,
             response_format="srt",
             prompt = prompt
         )
